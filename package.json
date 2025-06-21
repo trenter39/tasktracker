@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "name": "tasktracker",
+  "version": "1.0.0",
+  "main": "tracker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["CLI", "Task tracker"],
+  "author": "trenter39",
+  "license": "MIT",
+  "description": "a simple CLI to manage your tasks"
+}
