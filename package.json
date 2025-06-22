@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "task-cli": "./tracker.js"
+  },
   "keywords": ["CLI", "Task tracker"],
   "author": "trenter39",
   "license": "MIT",

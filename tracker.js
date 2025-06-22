@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import process, { argv } from 'node:process';
 import fs from 'fs';
 
