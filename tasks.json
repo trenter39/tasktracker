@@ -1,23 +1,23 @@
 [
   {
     "id": 1,
-    "description": "First task",
-    "status": "todo",
+    "description": "Emails",
+    "status": "done",
     "createdAt": "2025-06-21T17:53:23.481Z",
-    "updatedAt": "2025-06-21T17:53:23.481Z"
+    "updatedAt": "2025-07-14T18:50:35.582Z"
   },
   {
     "id": 2,
-    "description": "Second task",
-    "status": "in-progress",
+    "description": "Exercise",
+    "status": "todo",
     "createdAt": "2025-06-21T17:53:28.877Z",
-    "updatedAt": "2025-06-21T17:54:12.900Z"
+    "updatedAt": "2025-07-14T18:51:20.262Z"
   },
   {
     "id": 3,
-    "description": "Third task",
-    "status": "done",
-    "createdAt": "2025-06-21T17:53:33.281Z",
-    "updatedAt": "2025-06-21T17:54:06.637Z"
+    "description": "Chores",
+    "status": "in-progress",
+    "createdAt": "2025-07-14T18:13:21.733Z",
+    "updatedAt": "2025-07-14T18:51:04.687Z"
   }
 ]

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import process, { argv } from 'node:process';
+import process from 'process';
 import fs from 'fs';
 
 const tasks = loadTasks();
@@ -7,7 +7,7 @@ let taskIdCounter = getNextTaskId();
 
 const args = process.argv.slice(2);
 const command = args[0];
-const payload = args.slice(1).join(' ');
+const payload = args.slice(1).join(' ').trim();
 
 switch (command) {
     case 'add':
@@ -62,47 +62,42 @@ function getNextTaskId() {
 }
 
 function addCommand() {
-    const task = payload.trim();
+    const task = payload;
     if (task) addTask(task);
     else console.log('Invalid format. add Cook');
 }
 
 function updateCommand() {
-    const match = payload.trim().match(/^(\d+)\s+(.+)$/);
+    const match = payload.match(/^(\d+)\s+(.+)$/);
     if (match) {
         const id = Number(match[1]);
         const newDescription = match[2];
         updateTask(id, newDescription);
     }
     else console.log('Invalid format. update 1 Wash');
-
 }
 
 function deleteCommand() {
-    const idStr = payload.trim();
-    const match = idStr.match(/^\d+$/);
-    if (match) deleteTask(Number(idStr));
+    const match = payload.match(/^\d+$/);
+    if (match) deleteTask(Number(match[0]));
     else console.log('Invalid format. delete 1');
 }
 
 function markInProgressCommand() {
-    const idStr = payload.trim();
     const match = payload.match(/^\d+$/);
-    if (match) changeTaskStatus(Number(idStr), 'in-progress');
+    if (match) changeTaskStatus(Number(match[0]), 'in-progress');
     else console.log('Invalid format. mark-in-progress 1');
 }
 
 function markToDoCommand() {
-    const idStr = payload.trim();
     const match = payload.match(/^\d+$/);
-    if (match) changeTaskStatus(Number(idStr), 'todo');
+    if (match) changeTaskStatus(Number(match[0]), 'todo');
     else console.log('Invalid format. mark-todo 1');
 }
 
 function markDoneCommand() {
-    const idStr = payload.trim();
     const match = payload.match(/^\d+$/);
-    if (match) changeTaskStatus(Number(idStr), 'done');
+    if (match) changeTaskStatus(Number(match[0]), 'done');
     else console.log('Invalid format. mark-done 1');
 }
 
@@ -146,6 +141,7 @@ function updateTask(id, description) {
         taskToUpdate.updatedAt = new Date().toISOString();
         tasks.splice(index, 1, taskToUpdate);
         writeToFile();
+        console.log(`Task updated successfully to "${description}" (ID: ${id})!`);
     } else {
         console.log(`Task with ID ${id} not found!`);
     }
@@ -175,34 +171,45 @@ function changeTaskStatus(id, status) {
 }
 
 function showFullTaskList() {
+    if (tasks.length === 0) {
+        console.log("The list of tasks is currently empty. Add a new task using add command!");
+        return;
+    }
     console.log("Here's the full list of tasks:");
-    console.log("ID Description [Status]")
-    tasks.forEach(task =>
-        console.log(`${task.id}. ${task.description} [${task.status}]`));
+    console.log(`${"ID".padEnd(6)}${"Description".padEnd(18)}Status`);
+    tasks.forEach(task => {
+        const taskID = String(task.id).padEnd(6);
+        const taskDescription = task.description.padEnd(18);
+        const taskStatus = task.status;
+        console.log(`${taskID}${taskDescription}${taskStatus}`);
+    });
 }
 
 function showDoneTaskList() {
     const doneTaskList = tasks.filter(task => task.status === 'done');
     console.log("Here's the list of done tasks:");
-    console.log("ID Description")
-    doneTaskList.forEach(task =>
-        console.log(`${task.id}. ${task.description}`));
+    console.log(`${"ID".padEnd(6)}Description`);
+    doneTaskList.forEach(task => showTask(task));
 }
 
 function showToDoTaskList() {
     const toDoTaskList = tasks.filter(task => task.status === 'todo');
     console.log("Here's the list of todo tasks:");
-    console.log("ID Description")
-    toDoTaskList.forEach(task =>
-        console.log(`${task.id}. ${task.description}`));
+    console.log(`${"ID".padEnd(6)}Description`);
+    toDoTaskList.forEach(task => showTask(task));
 }
 
 function showInProgressTaskList() {
     const inProgressTaskList = tasks.filter(task => task.status === 'in-progress');
     console.log("Here's the list of in progress tasks:");
-    console.log("ID Description")
-    inProgressTaskList.forEach(task =>
-        console.log(`${task.id}. ${task.description}`));
+    console.log(`${"ID".padEnd(6)}Description`);
+    inProgressTaskList.forEach(task => showTask(task));
+}
+
+function showTask(task) {
+    const taskID = String(task.id).padEnd(6);
+    const taskDescription = task.description;
+    console.log(`${taskID}${taskDescription}`);
 }
 
 function writeToFile() {
